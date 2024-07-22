@@ -1,0 +1,59 @@
+/* General Styling */
+.root {
+    -fx-background-color: #D7E8FA; /* White background for a clean look */
+    -fx-font-family: "Circular", "Helvetica Neue", Helvetica, Arial, sans-serif; /* Airbnb uses Circular, fallback to Helvetica */
+}
+
+/* Text Input and Output Areas */
+.text-area, .text-flow {
+    -fx-border-color: #000236; /* Soft gray border */
+    -fx-border-radius: 8px; /* Rounded corners */
+    -fx-padding: 12px;
+    -fx-background-color: #fff; /* White background */
+}
+
+
+/* Labels */
+.label {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px; /* Slightly smaller for a cleaner look */
+    -fx-text-fill: #484848; /* Soft black/charcoal */
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #FF5A5F; /* Airbnb's signature coral */
+    -fx-text-fill: white;
+    -fx-padding: 12px 22px;
+    -fx-border: none;
+    -fx-border-radius: 8px; /* More rounded */
+    -fx-cursor: hand;
+    -fx-font-size: 14px; /* Standard text size for buttons */
+    -fx-font-weight: bold; /* Bold text in buttons */
+}
+
+.button:hover {
+    -fx-background-color: #D8434A; /* A darker shade of coral for hover effect */
+}
+
+/* List View */
+.list-view {
+    -fx-background-color: white;
+    -fx-border-color: #EBEBEB;
+    -fx-border-radius: 8px;
+    -fx-padding: 5px;
+}
+
+/* Text Fields */
+.text-field {
+    -fx-background-color: #fff;
+    -fx-border-color: #000236;
+    -fx-border-radius: 8px;
+    -fx-padding: 12px;
+}
+
+/* Scroll Pane */
+.scroll-pane {
+    -fx-background-color: #fff; /* Ensuring the background is white */
+    -fx-border-color: transparent; /* No borders for scroll panes */
+}

@@ -237,6 +237,39 @@ public class MainController {
         outputTextFlow.getChildren().add(new Text("\n"));
     }
 
+    @FXML
+    public void onUpdateDataButtonClick() {
+        int selectedIndex = dataListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            showAlert("Update Error", "Please select an item to update.");
+            return;
+        }
+        // Load the selected data into the input field for editing.
+        String selectedData = dataListView.getItems().get(selectedIndex);
+        dataInputField.setText(selectedData);
+    }
+
+    @FXML
+    public void onApplyUpdateButtonClick() {
+        int selectedIndex = dataListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            showAlert("Update Error", "No item selected to update.");
+            return;
+        }
+
+        String newData = dataInputField.getText();
+        if (newData.isEmpty()) {
+            showAlert("Input Error", "Data field cannot be empty.");
+            return;
+        }
+
+        DataItem selectedItem = dataManager.getAllData().get(selectedIndex);
+        DataItem updatedItem = new DataItem(selectedItem.getId(), newData);  // Create a new DataItem with updated data
+        dataManager.updateData(selectedIndex, updatedItem);  // Update the DataManager's list
+        dataListView.getItems().set(selectedIndex, newData);  // Update the ListView display
+        dataInputField.clear();  // Clear the input field after updating
+    }
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);

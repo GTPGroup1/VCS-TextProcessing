@@ -179,7 +179,7 @@ public class MainController {
     }
 
     @FXML
-    public void onExportButtonClick() {
+    public void onExportButtonClick() throws IOException {
         String selectedText = dataListView.getSelectionModel().getSelectedItem();
         if (selectedText == null) {
             showAlert("Export Error", "Please select an item to export.");
@@ -189,6 +189,25 @@ public class MainController {
         fileChooser.setTitle("Save Text File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            Files.write(file.toPath(), selectedText.getBytes());
+        }
+    }
+
+    @FXML
+    public void onImportButtonClick() throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Text File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            String content = Files.readString(file.toPath());
+            DataItem newItem = new DataItem(dataManager.getAllData().size() + 1, content);
+            dataManager.addData(newItem);
+            // Add the entire content as a single item in the ListView
+            dataListView.getItems().add(content);
+
+        }
     }
 
     private void highlightMatches(MatchResult match) {

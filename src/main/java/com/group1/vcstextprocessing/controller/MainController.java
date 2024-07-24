@@ -92,6 +92,31 @@ public class MainController {
     }
 
     @FXML
+    public void onPatternMatchButtonClick() {
+        try {
+            String regexPattern = regexTextField.getText();
+            List<MatchResult> matches = regexProcessor.matchWithPositions(dataManager.getAllData(), regexPattern);
+
+            outputTextFlow.getChildren().clear(); // Clear previous output
+            Text title = new Text(matches.isEmpty() ? "No Match Found!\n\n" : "Match Found:\n\n");
+            title.setFill(Color.rgb(230, 14, 212, 1));
+            if (!matches.isEmpty()) {
+                outputTextFlow.getChildren().add(title);
+                for (MatchResult match : matches) {
+                    highlightMatches(match);
+                }
+            } else {
+                title.setFill(Color.RED);
+                outputTextFlow.getChildren().add(title);
+            }
+
+        } catch (Exception e) {
+            outputTextFlow.getChildren().clear();
+            outputTextFlow.getChildren().add(new Text("Error: " + e.getMessage()));
+        }
+    }
+
+    @FXML
     public void onReplaceButtonClick() {
         String regexPattern = regexTextField.getText().trim();
         String replacement = replaceTextField.getText().trim();
@@ -179,7 +204,27 @@ public class MainController {
     }
 
     @FXML
-    public void onExportButtonClick() throws IOException {
+    public void onImportButtonClick() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Text File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            try {
+                // Read the entire file content into a single String
+                String content = Files.readString(file.toPath());
+                DataItem newItem = new DataItem(dataManager.getAllData().size() + 1, content);
+                dataManager.addData(newItem);
+                // Add the entire content as a single item in the ListView
+                dataListView.getItems().add(content);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    public void onExportButtonClick() {
         String selectedText = dataListView.getSelectionModel().getSelectedItem();
         if (selectedText == null) {
             showAlert("Export Error", "Please select an item to export.");
@@ -190,23 +235,11 @@ public class MainController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
-            Files.write(file.toPath(), selectedText.getBytes());
-        }
-    }
-
-    @FXML
-    public void onImportButtonClick() throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Text File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
-        File file = fileChooser.showOpenDialog(null);
-        if (file != null) {
-            String content = Files.readString(file.toPath());
-            DataItem newItem = new DataItem(dataManager.getAllData().size() + 1, content);
-            dataManager.addData(newItem);
-            // Add the entire content as a single item in the ListView
-            dataListView.getItems().add(content);
-
+            try {
+                Files.write(file.toPath(), selectedText.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

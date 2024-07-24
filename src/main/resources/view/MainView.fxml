@@ -20,7 +20,7 @@
 
     <HBox alignment="CENTER" spacing="10">
         <Button fx:id="searchButton" mnemonicParsing="false" onAction="#onSearchButtonClick" text="Search" />
-        <Button fx:id="patternMatchButton" mnemonicParsing="false" text="Pattern Match" />
+        <Button fx:id="patternMatchButton" mnemonicParsing="false" onAction="#onPatternMatchButtonClick" text="Pattern Match" />
         <Button fx:id="replaceAllButton" mnemonicParsing="false" onAction="#onReplaceAllButtonClick" text="Replace All" />
         <Button fx:id="replaceButton" mnemonicParsing="false" onAction="#onReplaceButtonClick" text="Replace" />
     </HBox>

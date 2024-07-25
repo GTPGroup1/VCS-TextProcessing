@@ -32,7 +32,7 @@
 
     <HBox alignment="CENTER" spacing="10">
         <TextField fx:id="dataInputField" prefWidth="400.0" promptText="Enter data" />
-        <Button fx:id="addDataButton" mnemonicParsing="false" text="Add Data" />
+        <Button fx:id="addDataButton" mnemonicParsing="false" onAction="#onAddDataButtonClick" text="Add Data" />
     </HBox>
 
     <ListView fx:id="dataListView" prefHeight="150.0" prefWidth="600.0"> <!-- Increased height -->
@@ -42,7 +42,7 @@
         <Button fx:id="deleteDataButton" mnemonicParsing="false" text="Delete Data" />
         <Button fx:id="updateDataButton" text="Load Data" />
         <Button fx:id="applyUpdateButton" text="Apply Update" />
-        <Button fx:id="viewButton" text="View Text" />
+        <Button fx:id="viewButton" onAction="#onViewButtonClick" text="View Text" />
         <Button fx:id="importButton" mnemonicParsing="false" text="Import Data" />
         <Button fx:id="exportButton" mnemonicParsing="false" text="Export Data" />
     </HBox>

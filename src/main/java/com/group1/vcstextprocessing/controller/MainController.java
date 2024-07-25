@@ -145,6 +145,35 @@ public class MainController {
         }
     }
 
+    @FXML
+    public void onAddDataButtonClick() {
+        String newData = dataInputField.getText();
+
+        if (!newData.isEmpty()) {
+
+            DataItem newItem = new DataItem(dataManager.getAllData().size() + 1, newData);
+            dataManager.addData(newItem);
+            dataListView.getItems().add(newData);
+            dataInputField.clear();
+        } else {
+            showAlert("Input Error", "Input field cannot be empty.");
+        }
+    }
+    @FXML
+    public void onViewButtonClick() {
+        String selectedText = dataListView.getSelectionModel().getSelectedItem();
+        if (selectedText == null) {
+            showAlert("View Error", "Please select an item to view.");
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("View Text");
+        alert.setHeaderText(null);
+        alert.setContentText(selectedText);
+        alert.showAndWait();
+    }
+
     private void highlightMatches(MatchResult match) {
         String line = match.line();
         int start = 0;

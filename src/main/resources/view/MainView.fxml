@@ -44,7 +44,7 @@
         <Button fx:id="applyUpdateButton" text="Apply Update" />
         <Button fx:id="viewButton" onAction="#onViewButtonClick" text="View Text" />
         <Button fx:id="importButton" mnemonicParsing="false" text="Import Data" />
-        <Button fx:id="exportButton" mnemonicParsing="false" text="Export Data" />
+        <Button fx:id="exportButton" mnemonicParsing="false" onAction="#onExportButtonClick" text="Export Data" />
     </HBox>
 
     <HBox spacing="10" alignment="CENTER"/>

@@ -15,7 +15,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 public class MainController {
@@ -172,6 +176,19 @@ public class MainController {
         alert.setHeaderText(null);
         alert.setContentText(selectedText);
         alert.showAndWait();
+    }
+
+    @FXML
+    public void onExportButtonClick() {
+        String selectedText = dataListView.getSelectionModel().getSelectedItem();
+        if (selectedText == null) {
+            showAlert("Export Error", "Please select an item to export.");
+            return;
+        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Text File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        File file = fileChooser.showSaveDialog(null);
     }
 
     private void highlightMatches(MatchResult match) {

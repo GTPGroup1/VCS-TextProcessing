@@ -87,6 +87,64 @@ public class MainController {
         }
     }
 
+    @FXML
+    public void onReplaceButtonClick() {
+        String regexPattern = regexTextField.getText().trim();
+        String replacement = replaceTextField.getText().trim();
+
+        int selectedIndex = dataListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            showAlert("Replace Error", "Please select an item to replace text in.");
+            return;
+        }
+        if (regexPattern.isEmpty()) {
+            showAlert("Replace Error", "Regex pattern cannot be empty.");
+            return;
+        }
+        if (replacement.isEmpty()) {
+            showAlert("Replace Error", "Replacement text cannot be empty.");
+            return;
+        }
+
+        try {
+            DataItem selectedItem = dataManager.getAllData().get(selectedIndex);
+            String modifiedText = selectedItem.getData().replaceAll(regexPattern, replacement);
+
+            // Create a new DataItem with the replaced text and update it
+            DataItem updatedItem = new DataItem(selectedItem.getId(), modifiedText);
+            dataManager.updateData(selectedIndex, updatedItem);
+            dataListView.getItems().set(selectedIndex, modifiedText);
+
+            showAlert("Success", "Text replaced successfully in the selected item.");
+        } catch (Exception e) {
+            showAlert("Replace Error", "Error in replacing text: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    public void onReplaceAllButtonClick() {
+        String regexPattern = regexTextField.getText().trim();
+        String replacement = replaceTextField.getText().trim();
+
+        if (regexPattern.isEmpty() || replacement.isEmpty()) {
+            showAlert("Replace Error", "Both regex pattern and replacement text must be provided.");
+            return;
+        }
+
+        try {
+            List<DataItem> modifiedData = regexProcessor.searchAndReplaceInCollection(dataManager.getAllData(), regexPattern, replacement);
+            dataManager.setDataList(modifiedData);
+
+            // Update ListView with the modified data
+            dataListView.getItems().clear();
+            dataListView.getItems().addAll(modifiedData.stream().map(DataItem::getData).toList());
+
+            showAlert("Success", "All occurrences replaced successfully.");
+        } catch (Exception e) {
+            showAlert("Replace Error", "Error in replacing text: " + e.getMessage());
+        }
+    }
+
     private void highlightMatches(MatchResult match) {
         String line = match.line();
         int start = 0;

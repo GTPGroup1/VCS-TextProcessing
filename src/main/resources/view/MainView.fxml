@@ -39,7 +39,7 @@
     </ListView>
 
     <HBox alignment="CENTER" spacing="10">
-        <Button fx:id="deleteDataButton" mnemonicParsing="false" text="Delete Data" />
+        <Button fx:id="deleteDataButton" mnemonicParsing="false" onAction="#onDeleteDataButtonClick" text="Delete Data" />
         <Button fx:id="updateDataButton" onAction="#onUpdateDataButtonClick" text="Load Data" />
         <Button fx:id="applyUpdateButton" onAction="#onApplyUpdateButtonClick" text="Apply Update" />
         <Button fx:id="viewButton" onAction="#onViewButtonClick" text="View Text" />

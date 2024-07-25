@@ -7,7 +7,9 @@ module com.group1.vcstextprocessing {
 
     opens com.group1.vcstextprocessing to javafx.fxml;
     exports com.group1.vcstextprocessing;
-    exports com.group1.vcstextprocessing.controller to javafx.fxml;
+    exports com.group1.vcstextprocessing.controller;
     opens com.group1.vcstextprocessing.controller to javafx.fxml;
+    exports com.group1.vcstextprocessing.model;
+    opens com.group1.vcstextprocessing.model to javafx.fxml;
 }
 

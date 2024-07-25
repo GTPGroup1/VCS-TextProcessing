@@ -43,4 +43,36 @@ public class RegexProcessor {
     // using Java's record class
     public record MatchResult(String line, List<int[]> positions) {
     }
+
+    // This method is for matching the entire string with the regex pattern
+    public List<DataItem> matchInCollection(List<DataItem> data, String regexPattern) {
+        List<DataItem> matches = new ArrayList<>();
+        Pattern pattern = Pattern.compile(regexPattern);
+
+        for (DataItem item : data) {
+            Matcher matcher = pattern.matcher(item.getData());
+            if (matcher.matches()) {
+                matches.add(item);
+            }
+        }
+        return matches;
+    }
+
+
+    // for coloring purpose we use this instead of matchInCollection
+    public List<MatchResult> matchWithPositions(List<DataItem> data, String regexPattern) {
+        List<MatchResult> matchResults = new ArrayList<>();
+        Pattern pattern = Pattern.compile(regexPattern);
+
+        for (DataItem item : data) {
+            Matcher matcher = pattern.matcher(item.getData());
+            List<int[]> positions = new ArrayList<>();
+
+            if (matcher.matches()) {
+                positions.add(new int[]{0, item.getData().length()});
+                matchResults.add(new MatchResult(item.getData(), positions));
+            }
+        }
+        return matchResults;
+    }
 }

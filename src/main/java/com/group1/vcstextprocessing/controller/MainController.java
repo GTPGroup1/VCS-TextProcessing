@@ -15,7 +15,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 public class MainController {
@@ -88,6 +92,31 @@ public class MainController {
     }
 
     @FXML
+    public void onPatternMatchButtonClick() {
+        try {
+            String regexPattern = regexTextField.getText();
+            List<MatchResult> matches = regexProcessor.matchWithPositions(dataManager.getAllData(), regexPattern);
+
+            outputTextFlow.getChildren().clear(); // Clear previous output
+            Text title = new Text(matches.isEmpty() ? "No Match Found!\n\n" : "Match Found:\n\n");
+            title.setFill(Color.rgb(230, 14, 212, 1));
+            if (!matches.isEmpty()) {
+                outputTextFlow.getChildren().add(title);
+                for (MatchResult match : matches) {
+                    highlightMatches(match);
+                }
+            } else {
+                title.setFill(Color.RED);
+                outputTextFlow.getChildren().add(title);
+            }
+
+        } catch (Exception e) {
+            outputTextFlow.getChildren().clear();
+            outputTextFlow.getChildren().add(new Text("Error: " + e.getMessage()));
+        }
+    }
+
+    @FXML
     public void onReplaceButtonClick() {
         String regexPattern = regexTextField.getText().trim();
         String replacement = replaceTextField.getText().trim();
@@ -145,6 +174,75 @@ public class MainController {
         }
     }
 
+    @FXML
+    public void onAddDataButtonClick() {
+        String newData = dataInputField.getText();
+
+        if (!newData.isEmpty()) {
+
+            DataItem newItem = new DataItem(dataManager.getAllData().size() + 1, newData);
+            dataManager.addData(newItem);
+            dataListView.getItems().add(newData);
+            dataInputField.clear();
+        } else {
+            showAlert("Input Error", "Input field cannot be empty.");
+        }
+    }
+    @FXML
+    public void onViewButtonClick() {
+        String selectedText = dataListView.getSelectionModel().getSelectedItem();
+        if (selectedText == null) {
+            showAlert("View Error", "Please select an item to view.");
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("View Text");
+        alert.setHeaderText(null);
+        alert.setContentText(selectedText);
+        alert.showAndWait();
+    }
+
+    @FXML
+    public void onImportButtonClick() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Text File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            try {
+                // Read the entire file content into a single String
+                String content = Files.readString(file.toPath());
+                DataItem newItem = new DataItem(dataManager.getAllData().size() + 1, content);
+                dataManager.addData(newItem);
+                // Add the entire content as a single item in the ListView
+                dataListView.getItems().add(content);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    public void onExportButtonClick() {
+        String selectedText = dataListView.getSelectionModel().getSelectedItem();
+        if (selectedText == null) {
+            showAlert("Export Error", "Please select an item to export.");
+            return;
+        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Text File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            try {
+                Files.write(file.toPath(), selectedText.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void highlightMatches(MatchResult match) {
         String line = match.line();
         int start = 0;
@@ -170,6 +268,39 @@ public class MainController {
         }
 
         outputTextFlow.getChildren().add(new Text("\n"));
+    }
+
+    @FXML
+    public void onUpdateDataButtonClick() {
+        int selectedIndex = dataListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            showAlert("Update Error", "Please select an item to update.");
+            return;
+        }
+        // Load the selected data into the input field for editing.
+        String selectedData = dataListView.getItems().get(selectedIndex);
+        dataInputField.setText(selectedData);
+    }
+
+    @FXML
+    public void onApplyUpdateButtonClick() {
+        int selectedIndex = dataListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            showAlert("Update Error", "No item selected to update.");
+            return;
+        }
+
+        String newData = dataInputField.getText();
+        if (newData.isEmpty()) {
+            showAlert("Input Error", "Data field cannot be empty.");
+            return;
+        }
+
+        DataItem selectedItem = dataManager.getAllData().get(selectedIndex);
+        DataItem updatedItem = new DataItem(selectedItem.getId(), newData);  // Create a new DataItem with updated data
+        dataManager.updateData(selectedIndex, updatedItem);  // Update the DataManager's list
+        dataListView.getItems().set(selectedIndex, newData);  // Update the ListView display
+        dataInputField.clear();  // Clear the input field after updating
     }
 
 

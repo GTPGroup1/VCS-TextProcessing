@@ -75,4 +75,16 @@ public class RegexProcessor {
         }
         return matchResults;
     }
+
+    // This method is for search and replace in the collection data
+    public List<DataItem> searchAndReplaceInCollection(List<DataItem> data, String regexPattern, String replacement) {
+        List<DataItem> modifiedData = new ArrayList<>();
+        Pattern pattern = Pattern.compile(regexPattern);
+
+        for (DataItem item : data) {
+            Matcher matcher = pattern.matcher(item.getData());
+            modifiedData.add(new DataItem(item.getId(), matcher.replaceAll(replacement)));
+        }
+        return modifiedData;
+    }
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="root" alignment="CENTER" spacing="20.0" stylesheets="/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group1.vcstextprocessing.controller.MainController">
+
+    <padding>
+        <Insets bottom="20.0" left="60.0" right="60.0" top="20.0" />
+    </padding>
+
+    <Label text="Regex/String" alignment="BASELINE_LEFT" />
+    <TextField fx:id="regexTextField" prefWidth="600.0" promptText="Enter a pattern" />
+    <Label text="Replacement text" alignment="BASELINE_LEFT" />
+    <TextField fx:id="replaceTextField" prefWidth="150.0" promptText="Replacement" />
+
+
+
+    <HBox alignment="CENTER" spacing="10">
+        <Button fx:id="searchButton" mnemonicParsing="false" text="Search" />
+        <Button fx:id="patternMatchButton" mnemonicParsing="false" text="Pattern Match" />
+        <Button fx:id="replaceAllButton" mnemonicParsing="false" text="Replace All" />
+        <Button fx:id="replaceButton" mnemonicParsing="false" text="Replace" />
+    </HBox>
+
+    <Label text="Output:" />
+    <ScrollPane prefHeight="200.0" prefWidth="600.0"> <!-- Reduced height -->
+        <TextFlow fx:id="outputTextFlow" />
+    </ScrollPane>
+
+    <HBox alignment="CENTER" spacing="10">
+        <TextField fx:id="dataInputField" prefWidth="400.0" promptText="Enter data" />
+        <Button fx:id="addDataButton" mnemonicParsing="false" text="Add Data" />
+    </HBox>
+
+    <ListView fx:id="dataListView" prefHeight="150.0" prefWidth="600.0"> <!-- Increased height -->
+    </ListView>
+
+    <HBox alignment="CENTER" spacing="10">
+        <Button fx:id="deleteDataButton" mnemonicParsing="false" text="Delete Data" />
+        <Button fx:id="updateDataButton" text="Load Data" />
+        <Button fx:id="applyUpdateButton" text="Apply Update" />
+        <Button fx:id="viewButton" text="View Text" />
+        <Button fx:id="importButton" mnemonicParsing="false" text="Import Data" />
+        <Button fx:id="exportButton" mnemonicParsing="false" text="Export Data" />
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER"/>
+</VBox>

@@ -5,10 +5,7 @@ import com.group1.vcstextprocessing.model.DataManager;
 import com.group1.vcstextprocessing.model.RegexProcessor;
 import com.group1.vcstextprocessing.model.RegexProcessor.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -21,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Optional;
 
 public class MainController {
 
@@ -280,6 +278,24 @@ public class MainController {
         // Load the selected data into the input field for editing.
         String selectedData = dataListView.getItems().get(selectedIndex);
         dataInputField.setText(selectedData);
+    }
+
+    @FXML
+    public void onDeleteDataButtonClick() {
+        int selectedIndex = dataListView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            showAlert("Delete Error", "Please select an item to delete.");
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Data");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to delete this data?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            dataManager.deleteData(selectedIndex);
+            dataListView.getItems().remove(selectedIndex);
+        }
     }
 
     @FXML
